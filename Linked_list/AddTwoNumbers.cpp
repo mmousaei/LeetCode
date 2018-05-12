@@ -22,7 +22,46 @@ struct ListNode {
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-      cerr << l1->val;
+      int val_tmp = 0;
+      int dec_overflw = 0;
+      ListNode* dummyRoot = new ListNode(0);
+      ListNode* out_list = dummyRoot;
+      while (l1 != NULL || l2 != NULL)
+      {
+        if(l1 == NULL)
+        {
+          val_tmp = l2->val;
+        }
+        else if(l2 == NULL)
+        {
+          val_tmp = l1->val;
+        }
+        else
+        {
+          val_tmp = l1->val + l2->val;
+        }
+        if((val_tmp + dec_overflw) < 10)
+        {
+          out_list->next = new ListNode(val_tmp+dec_overflw);
+          dec_overflw = 0;
+        }
+        else
+        {
+          out_list->next = new ListNode(val_tmp+dec_overflw-10);
+          dec_overflw = 1;
+        }
+        out_list = out_list->next;
+        if(l1 != NULL)  l1 = l1->next;
+        if(l2 != NULL)  l2 = l2->next;
+      }
+      if(dec_overflw == 1)
+      {
+          out_list->next = new ListNode(1);
+          out_list = out_list->next;
+      }
+      out_list = dummyRoot->next;
+      delete dummyRoot;
+      return out_list;
     }
 };
 
