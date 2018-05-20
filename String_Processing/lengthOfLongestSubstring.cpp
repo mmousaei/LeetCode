@@ -19,11 +19,13 @@ using namespace std;
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
+      if(s.length() == 1)
+          return 1;
       std::vector<char> v;
-      v.push_back(s[0]);
       int longestLength = 0;
+      int identical_ind;
       bool substr_flag = true;
-      for(int i = 1; i < s.length(); i++)
+      for(int i = 0; i < s.length(); i++)
       {
         substr_flag = true;
         for(int j = 0; j < v.size(); j++)
@@ -31,12 +33,13 @@ public:
             if(s[i] == v[j])
             {
               substr_flag = false;
+              identical_ind = v.size() - j;
             }
         }
         int length_temp;
         if(substr_flag)
         {
-            v.push_back(s[0]);
+            v.push_back(s[i]);
             length_temp = v.size();
             if(length_temp > longestLength)
             {
@@ -46,13 +49,16 @@ public:
         else
         {
           v.erase(v.begin(), v.end());
+          for(int k = i - identical_ind; k <= i; k++)
+          {
+             v.push_back(s[k]);
+          }
         }
 
       }
-      return s.length();
+      return longestLength;
     }
 };
-
 string stringToString(string input) {
     assert(input.length() >= 2);
     string result;
